@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['nama', 'alamat', 'no_ktp', 'no_hp', 'no_rm', 'email', 'password', 'role', 'id_poli'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -25,8 +25,22 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function poli(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Poli::class, 'id_poli');
+    }
+
+    public function jadwalPeriksas(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(JadwalPeriksa::class, 'id_dokter');
+    }
+
+    public function jadwalPeriksa(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->jadwalPeriksas();
     }
 }
