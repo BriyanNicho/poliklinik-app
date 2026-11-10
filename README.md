@@ -36,8 +36,13 @@ Aplikasi sistem informasi manajemen layanan kesehatan Poliklinik berbasis web ya
   - Penentuan jam mulai dan jam selesai praktik.
   - Pembaruan dan penghapusan jadwal praktik.
 - **Periksa Pasien**:
-  - Pemeriksaan pasien sesuai antrian poli.
-  - Penginputan diagnosa/catatan medis dan peresepan obat.
+  - Menampilkan daftar antrean pasien yang mendaftar pada jadwal praktik dokter yang sedang login.
+  - Status pemeriksaan pasien (Badge: *Belum Diperiksa* / *Sudah Diperiksa*).
+  - Form pemeriksaan pasien: tanggal & waktu periksa, catatan diagnosa medis.
+  - Pemilihan resep obat yang diresepkan dari master obat dengan kalkulator rincian biaya langsung (*real-time*).
+  - Perhitungan otomatis total biaya pemeriksaan: Biaya dasar konsultasi dokter (Rp 150.000) + akumulasi total harga obat yang dipilih.
+  - Penyimpanan dan sinkronisasi otomatis ke relasi tabel `periksa` dan pivot `detail_periksa`.
+  - Dukungan pemeriksaan baru dan fitur pembaruan (*edit*) data pemeriksaan yang telah selesai.
 - **Riwayat Pasien**:
   - Daftar riwayat pasien yang pernah ditangani oleh dokter yang bersangkutan.
   - Detail riwayat pemeriksaan lengkap: data pasien, nomor antrian, keluhan, catatan dokter/diagnosa, daftar obat yang diresepkan beserta harganya, dan total biaya pemeriksaan.
@@ -153,6 +158,9 @@ Jika proyek berada di dalam direktori `C:\laragon\www\poliklinik-app`:
 - `GET /dokter/dashboard` ➔ `dokter.dashboard`
 - `RESOURCE /dokter/jadwal-periksa` ➔ `jadwal-periksa.*` (`JadwalPeriksaController`)
 - `GET /dokter/periksa-pasien` ➔ `periksa-pasien.index` (`PeriksaPasienController`)
+- `POST /dokter/periksa-pasien` ➔ `periksa-pasien.store` (`PeriksaPasienController`)
+- `GET /dokter/periksa-pasien/{id}` ➔ `periksa-pasien.create` (`PeriksaPasienController`)
+- `GET /dokter/periksa-pasien/{id}/edit` ➔ `periksa-pasien.edit` (`PeriksaPasienController`)
 - `GET /dokter/riwayat-pasien` ➔ `riwayat-pasien.index` (`RiwayatPasienController`)
 - `GET /dokter/riwayat-pasien/{id}` ➔ `riwayat-pasien.show` (`RiwayatPasienController`)
 

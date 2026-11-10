@@ -54,6 +54,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () 
     Route::get('/periksa-pasien', [PeriksaPasienController::class, 'index'])->name('periksa-pasien.index');
     Route::post('/periksa-pasien', [PeriksaPasienController::class, 'store'])->name('periksa-pasien.store');
     Route::get('/periksa-pasien/{id}', [PeriksaPasienController::class, 'create'])->name('periksa-pasien.create');
+    Route::get('/periksa-pasien/{id}/edit', [PeriksaPasienController::class, 'edit'])->name('periksa-pasien.edit');
 
     Route::get('/riwayat-pasien', [RiwayatPasienController::class, 'index'])->name('riwayat-pasien.index');
     Route::get('/riwayat-pasien/{id}', [RiwayatPasienController::class, 'show'])->name('riwayat-pasien.show');

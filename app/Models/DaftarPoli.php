@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DaftarPoli extends Model
 {
@@ -25,6 +26,11 @@ class DaftarPoli extends Model
     public function jadwalPeriksa(): BelongsTo
     {
         return $this->jadwal();
+    }
+
+    public function periksa(): HasOne
+    {
+        return $this->hasOne(Periksa::class, 'id_daftar_poli');
     }
 
     public function periksas(): HasMany
