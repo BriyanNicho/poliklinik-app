@@ -191,3 +191,4 @@ class PeriksaPasienTest extends TestCase
         $responseStore->assertStatus(404);
     }
 }
+

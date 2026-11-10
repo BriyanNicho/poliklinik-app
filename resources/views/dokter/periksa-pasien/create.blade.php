@@ -226,3 +226,4 @@
         });
     </script>
 </x-layouts.app>
+
