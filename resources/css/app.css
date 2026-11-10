@@ -10,3 +10,37 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    body {
+        @apply antialiased;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-primary;
+    }
+}
+
+@layer components {
+    .card {
+        @apply border border-base-200/80 shadow-sm;
+    }
+
+    .card-title {
+        @apply font-bold tracking-tight;
+    }
+
+    .table thead th {
+        @apply whitespace-nowrap text-xs font-bold uppercase tracking-wide;
+    }
+
+    .table tbody td {
+        @apply align-middle;
+    }
+
+    .input,
+    .select,
+    .textarea {
+        @apply transition focus:outline-none focus:ring-2 focus:ring-primary/20;
+    }
+}

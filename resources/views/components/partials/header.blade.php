@@ -1,13 +1,13 @@
-<header class="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-base-300 bg-base-100 px-4 shadow-sm lg:px-6">
-    <button type="button" onclick="toggleSidebar()" class="btn btn-square btn-ghost lg:hidden" aria-label="Buka menu">
-        <span class="text-xl">☰</span>
+<header class="sticky top-0 z-30 flex min-h-16 items-center gap-3 border-b border-base-300/80 bg-base-100/95 px-4 shadow-sm backdrop-blur lg:gap-4 lg:px-8">
+    <button type="button" onclick="toggleSidebar()" class="btn btn-square btn-ghost lg:hidden" aria-label="Buka menu" aria-controls="dashboard-sidebar">
+        <i class="fas fa-bars text-lg"></i>
     </button>
 
     <div class="flex-1">
         <div class="flex items-center gap-2 text-sm">
-            <span class="text-base-content/50">Poliklinik</span>
-            <span class="text-base-content/30">/</span>
-            <span class="font-semibold">{{ $title ?? 'Dashboard' }}</span>
+            <span class="hidden text-base-content/50 sm:inline">Poliklinik</span>
+            <span class="hidden text-base-content/30 sm:inline">/</span>
+            <span class="truncate font-semibold">{{ $title ?? 'Dashboard' }}</span>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
     </button>
 
     <div class="avatar placeholder">
-        <div class="w-10 rounded-full bg-primary text-primary-content">
+        <div class="w-9 rounded-xl bg-primary text-primary-content shadow-sm">
             <span>{{ strtoupper(substr(auth()->user()->nama ?? 'U', 0, 1)) }}</span>
         </div>
     </div>
@@ -29,7 +29,7 @@
 <script>
     function toggleFullscreen() {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
+            document.documentElement.requestFullscreen().catch(() => {});
             document.getElementById('fsIcon').textContent = '⛶';
         } else {
             document.exitFullscreen();
@@ -38,6 +38,9 @@
     }
 
     function toggleSidebar() {
-        document.getElementById('dashboard-sidebar').classList.toggle('-translate-x-full');
+        const sidebar = document.getElementById('dashboard-sidebar');
+        const overlay = document.getElementById('dashboard-sidebar-overlay');
+        const isClosed = sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden', isClosed);
     }
 </script>

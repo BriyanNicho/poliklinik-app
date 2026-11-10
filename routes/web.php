@@ -9,6 +9,12 @@ use App\Http\Controllers\Dokter\JadwalPeriksaController;
 use App\Http\Controllers\Dokter\PeriksaPasienController;
 use App\Http\Controllers\Dokter\RiwayatPasienController;
 use App\Http\Controllers\Pasien\PoliController;
+use App\Models\DaftarPoli;
+use App\Models\JadwalPeriksa;
+use App\Models\Obat;
+use App\Models\Periksa;
+use App\Models\Poli;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,7 +42,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        return view('admin.dashboard', [
+            'totalPoli' => Poli::count(),
+            'totalDokter' => User::where('role', 'dokter')->count(),
+            'totalPasien' => User::where('role', 'pasien')->count(),
+            'totalObat' => Obat::count(),
+            'totalPendaftaran' => DaftarPoli::count(),
+            'totalPemeriksaan' => Periksa::count(),
+        ]);
     })->name('admin.dashboard');
     Route::resource('polis', AdminPoliController::class);
     Route::resource('dokter', DokterController::class);
@@ -46,7 +59,27 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
 Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () {
     Route::get('/dashboard', function () {
-        return view('dokter.dashboard');
+        $dokterId = auth()->id();
+        $jadwalIds = JadwalPeriksa::where('id_dokter', $dokterId)->pluck('id');
+
+        return view('dokter.dashboard', [
+            'totalJadwal' => $jadwalIds->count(),
+            'totalPasien' => DaftarPoli::whereIn('id_jadwal', $jadwalIds)
+                ->distinct('id_pasien')
+                ->count('id_pasien'),
+            'totalMenunggu' => DaftarPoli::whereIn('id_jadwal', $jadwalIds)
+                ->whereDoesntHave('periksa')
+                ->count(),
+            'totalSelesai' => DaftarPoli::whereIn('id_jadwal', $jadwalIds)
+                ->whereHas('periksa')
+                ->count(),
+            'pasienMenunggu' => DaftarPoli::with(['pasien', 'jadwalPeriksa'])
+                ->whereIn('id_jadwal', $jadwalIds)
+                ->whereDoesntHave('periksa')
+                ->latest()
+                ->take(5)
+                ->get(),
+        ]);
     })->name('dokter.dashboard');
 
     Route::resource('jadwal-periksa', JadwalPeriksaController::class);
@@ -62,7 +95,22 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () 
 
 Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->name('pasien.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('pasien.dashboard');
+        $pendaftaran = DaftarPoli::with(['jadwalPeriksa.dokter'])
+            ->where('id_pasien', auth()->id())
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('pasien.dashboard', [
+            'totalPendaftaran' => DaftarPoli::where('id_pasien', auth()->id())->count(),
+            'totalMenunggu' => DaftarPoli::where('id_pasien', auth()->id())
+                ->whereDoesntHave('periksa')
+                ->count(),
+            'totalSelesai' => DaftarPoli::where('id_pasien', auth()->id())
+                ->whereHas('periksa')
+                ->count(),
+            'pendaftaran' => $pendaftaran,
+        ]);
     })->name('dashboard');
 
     Route::get('/daftar-poli', [PoliController::class, 'index'])->name('daftar-poli.index');

@@ -1,45 +1,39 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Poli - Poliklinik</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen bg-slate-100 text-slate-900">
-    <main class="mx-auto max-w-5xl space-y-6 px-4 py-12">
-        <section class="rounded-2xl bg-white p-8 shadow-sm">
-            <div class="flex items-center justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl font-bold">Pendaftaran Poli</h1>
-                    <p class="mt-1 text-slate-600">Halo, {{ $user->nama }}.</p>
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Logout</button>
-                </form>
-            </div>
+<x-layouts.app title="Pendaftaran Poli">
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">Layanan pasien</p>
+            <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">Pendaftaran Poli</h1>
+            <p class="mt-2 text-sm text-base-content/60">Halo, {{ $user->nama }}. Pilih poli dan jadwal dokter yang tersedia.</p>
+        </div>
+    </div>
 
-            @if (session('message'))
-                <div class="mt-6 rounded-lg bg-green-50 p-4 text-sm text-green-700">
-                    {{ session('message') }}
-                </div>
-            @endif
+    @if (session('message'))
+        <div class="alert alert-success mb-6 border-0 shadow-sm">
+            <i class="fas fa-circle-check"></i>
+            <span>{{ session('message') }}</span>
+        </div>
+    @endif
 
-            @if ($errors->any())
-                <div class="mt-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">
-                    {{ $errors->first() }}
-                </div>
-            @endif
+    @if ($errors->any())
+        <div class="alert alert-error mb-6 border-0 shadow-sm">
+            <i class="fas fa-circle-exclamation"></i>
+            <span>{{ $errors->first() }}</span>
+        </div>
+    @endif
 
-            <form method="POST" action="{{ route('pasien.daftar-poli.store') }}" class="mt-6 grid gap-4 md:grid-cols-2">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+        <section class="card bg-base-100">
+            <div class="card-body">
+                <h2 class="card-title">Buat pendaftaran</h2>
+                <p class="text-sm text-base-content/60">Data keluhan akan membantu dokter menyiapkan pemeriksaan.</p>
+
+                <form method="POST" action="{{ route('pasien.daftar-poli.store') }}" class="mt-4 grid gap-4">
                 @csrf
 
-                {{-- Pilih Poli --}}
-                <label class="text-sm font-medium">
-                    Poli
+                <label class="form-control text-sm font-medium">
+                    <span class="label-text mb-2 font-semibold">Poli</span>
                     <select id="select-poli" name="id_poli" required
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2">
+                            class="select select-bordered w-full">
                         <option value="">Pilih poli</option>
                         @foreach ($polis as $poli)
                             <option value="{{ $poli->id }}" @selected(old('id_poli') == $poli->id)>
@@ -49,11 +43,10 @@
                     </select>
                 </label>
 
-                {{-- Pilih Jadwal (difilter oleh JS sesuai poli yang dipilih) --}}
-                <label class="text-sm font-medium">
-                    Jadwal Dokter
+                <label class="form-control text-sm font-medium">
+                    <span class="label-text mb-2 font-semibold">Jadwal Dokter</span>
                     <select id="select-jadwal" name="id_jadwal" required
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2">
+                            class="select select-bordered w-full">
                         <option value="">-- Pilih poli dahulu --</option>
                         @foreach ($jadwals as $jadwal)
                             {{-- Setiap option menyimpan id_poli dokter sebagai data attribute --}}
@@ -68,44 +61,56 @@
                     </select>
                 </label>
 
-                <label class="text-sm font-medium md:col-span-2">
-                    Keluhan
+                <label class="form-control text-sm font-medium">
+                    <span class="label-text mb-2 font-semibold">Keluhan</span>
                     <textarea name="keluhan" required rows="4"
-                        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2">{{ old('keluhan') }}</textarea>
+                        class="textarea textarea-bordered w-full">{{ old('keluhan') }}</textarea>
                 </label>
 
-                <button class="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 md:col-span-2">
+                <button class="btn btn-primary mt-2 w-full">
                     Daftar Poli
                 </button>
-            </form>
+                </form>
+            </div>
         </section>
 
-        <section class="rounded-2xl bg-white p-8 shadow-sm">
-            <h2 class="text-xl font-bold">Pendaftaran Saya</h2>
+        <section class="card bg-base-100">
+            <div class="card-body">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <h2 class="card-title">Pendaftaran Saya</h2>
+                    <p class="mt-1 text-sm text-base-content/60">Daftar antrean yang masih aktif.</p>
+                </div>
+                <span class="badge badge-primary badge-outline">{{ $pendaftaran->count() }} aktif</span>
+            </div>
             <div class="mt-4 space-y-3">
                 @forelse ($pendaftaran as $daftar)
-                    <div class="flex items-center justify-between gap-4 rounded-lg border border-slate-200 p-4">
+                    <div class="flex flex-col gap-4 rounded-xl border border-base-200 bg-base-200/30 p-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <p class="font-semibold">Nomor antrean: {{ $daftar->no_antrian }}</p>
-                            <p class="text-sm text-slate-600">
+                            <p class="font-semibold">Nomor antrean <span class="text-primary">#{{ $daftar->no_antrian }}</span></p>
+                            <p class="text-sm text-base-content/60">
                                 {{ $daftar->jadwal->dokter->nama }} &mdash; {{ $daftar->jadwal->hari }}
                                 ({{ substr($daftar->jadwal->jam_mulai, 0, 5) }} - {{ substr($daftar->jadwal->jam_selesai, 0, 5) }})
                             </p>
-                            <p class="mt-1 text-sm text-slate-600">{{ $daftar->keluhan }}</p>
+                            <p class="mt-1 text-sm text-base-content/60">{{ $daftar->keluhan }}</p>
                         </div>
                         <form method="POST" action="{{ route('pasien.daftar-poli.destroy', $daftar) }}">
                             @csrf
                             @method('DELETE')
-                            <button class="text-sm font-semibold text-red-600">Batalkan</button>
+                            <button class="btn btn-error btn-outline btn-sm">Batalkan</button>
                         </form>
                     </div>
                 @empty
-                    <p class="text-sm text-slate-600">Belum ada pendaftaran.</p>
+                    <div class="rounded-xl border border-dashed border-base-300 p-8 text-center text-sm text-base-content/60">
+                        <i class="fas fa-calendar-check mb-3 block text-2xl opacity-40"></i>
+                        Belum ada pendaftaran aktif.
+                    </div>
                 @endforelse
             </div>
         </section>
-    </main>
+    </div>
 
+    @push('scripts')
     <script>
         (function () {
             const selectPoli   = document.getElementById('select-poli');
@@ -152,5 +157,5 @@
             @endif
         })();
     </script>
-</body>
-</html>
+    @endpush
+</x-layouts.app>

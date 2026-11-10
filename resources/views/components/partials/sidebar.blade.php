@@ -4,10 +4,13 @@
     $inactive = '';
 @endphp
 
-<aside id="dashboard-sidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col bg-slate-900 text-slate-300 transition-transform lg:static lg:translate-x-0">
-    <div class="border-b border-white/10 px-5 py-5">
-        <div class="text-lg font-bold text-white">Poliklinik</div>
-        <div class="mt-1 text-xs font-semibold uppercase tracking-wider text-primary-content/70">
+<aside id="dashboard-sidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col bg-slate-950 text-slate-300 shadow-2xl transition-transform lg:static lg:translate-x-0 lg:shadow-none">
+    <div class="border-b border-white/10 px-6 py-6">
+        <div class="flex items-center gap-3">
+            <div class="grid size-10 place-items-center rounded-xl bg-primary text-lg font-bold text-primary-content shadow-lg shadow-primary/20">P</div>
+            <div class="text-lg font-bold text-white">Poliklinik</div>
+        </div>
+        <div class="mt-3 text-xs font-semibold uppercase tracking-wider text-primary-content/70">
             {{ ucfirst(auth()->user()->role) }}
         </div>
     </div>
@@ -48,7 +51,7 @@
             </div>
         @elseif (auth()->user()->role === 'dokter' || request()->is('dokter*'))
             {{-- ================ DOKTER ================ --}}
-            <p class="text-xs uppercase tracking-widest text-indigo-400 px-3 mt-1">
+            <p class="mt-1 px-3 text-xs font-bold uppercase tracking-widest text-indigo-300">
                 Menu Dokter
             </p>
 
@@ -100,4 +103,4 @@
     </div>
 </aside>
 
-<div class="fixed inset-0 z-30 hidden bg-black/40 lg:hidden" onclick="toggleSidebar()"></div>
+<div id="dashboard-sidebar-overlay" class="fixed inset-0 z-30 hidden bg-slate-950/50 backdrop-blur-sm lg:hidden" onclick="toggleSidebar()"></div>

@@ -14,16 +14,18 @@
         <div class="flex min-w-0 flex-1 flex-col">
             @include('components.partials.header', ['title' => $title ?? 'Dashboard'])
 
-            <main class="flex-1 p-4 lg:p-8">
-                <section class="mx-auto max-w-5xl">
+            <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+                <section class="mx-auto w-full max-w-7xl">
                     @if (session('success') || session('message'))
-                        <div class="alert alert-success mb-6 shadow-sm">
+                        <div class="alert alert-success mb-6 border-0 shadow-sm">
+                            <i class="fas fa-circle-check"></i>
                             <span>{{ session('success') ?? session('message') }}</span>
                         </div>
                     @endif
 
                     @if (session('error'))
-                        <div class="alert alert-error mb-6 shadow-sm">
+                        <div class="alert alert-error mb-6 border-0 shadow-sm">
+                            <i class="fas fa-circle-exclamation"></i>
                             <span>{{ session('error') }}</span>
                         </div>
                     @endif
