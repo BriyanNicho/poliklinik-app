@@ -85,3 +85,4 @@ class DokterSeeder extends Seeder
         }
     }
 }
+

@@ -179,3 +179,4 @@ class DaftarPoliSeeder extends Seeder
         }
     }
 }
+

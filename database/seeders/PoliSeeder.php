@@ -22,3 +22,4 @@ class PoliSeeder extends Seeder
         }
     }
 }
+
