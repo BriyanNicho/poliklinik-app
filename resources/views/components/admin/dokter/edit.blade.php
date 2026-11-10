@@ -1,0 +1,2 @@
+@include('admin.dokter.edit')
+

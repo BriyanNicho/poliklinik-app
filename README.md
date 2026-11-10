@@ -1,58 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Aplikasi Poliklinik
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi sistem informasi manajemen layanan kesehatan Poliklinik berbasis web yang dikembangkan menggunakan **Laravel 11/12**, **Tailwind CSS**, **DaisyUI**, **Font Awesome**, dan database **MySQL**. Aplikasi ini mendukung multi-user role (Admin, Dokter, dan Pasien) untuk memfasilitasi operasional klinik mulai dari manajemen master data hingga pencatatan rekam medis pemeriksaan pasien.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🌟 Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Modul Admin
+- **Dashboard Admin**: Ringkasan operasional dan navigasi sistem klinik.
+- **Manajemen Poli (CRUD)**:
+  - Menampilkan daftar poli layanan kesehatan.
+  - Tambah poli baru dengan validasi data.
+  - Ubah informasi nama poli dan keterangan.
+  - Hapus data poli.
+- **Manajemen Dokter (CRUD)**:
+  - Menampilkan data lengkap dokter beserta bidang poli masing-masing.
+  - Tambah dokter baru (Nama, Email, No. KTP, No. HP, Alamat, Pilihan Poli, Password terenkripsi).
+  - Edit profil dokter dan penggantian password opsional.
+  - Hapus data akun dokter.
+- **Manajemen Pasien (CRUD)**:
+  - Menampilkan daftar pasien terdaftar.
+  - Pendaftaran pasien baru dari sisi admin.
+  - Edit data identitas pasien.
+  - Hapus data pasien.
+- **Manajemen Obat (CRUD)**:
+  - Menampilkan katalog obat beserta kemasan dan harga satuan.
+  - Tambah master obat baru.
+  - Edit informasi obat, kemasan, dan harga.
+  - Hapus data obat.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Modul Dokter
+- **Dashboard Dokter**: Akses cepat layanan dokter.
+- **Jadwal Periksa (CRUD)**:
+  - Pengaturan jadwal praktik dokter per hari (Senin - Minggu).
+  - Penentuan jam mulai dan jam selesai praktik.
+  - Pembaruan dan penghapusan jadwal praktik.
+- **Periksa Pasien**:
+  - Pemeriksaan pasien sesuai antrian poli.
+  - Penginputan diagnosa/catatan medis dan peresepan obat.
+- **Riwayat Pasien**:
+  - Daftar riwayat pasien yang pernah ditangani oleh dokter yang bersangkutan.
+  - Detail riwayat pemeriksaan lengkap: data pasien, nomor antrian, keluhan, catatan dokter/diagnosa, daftar obat yang diresepkan beserta harganya, dan total biaya pemeriksaan.
 
-## Learning Laravel
+### 3. Modul Pasien
+- **Pendaftaran Poli**: Pendaftaran antrian poli dan pemilihan dokter & jadwal periksa yang tersedia.
+- **Pemeriksaan Saya**: Memantau nomor antrian dan status pendaftaran poli.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 4. Autentikasi & Otorisasi
+- Multi-role authentication (Admin, Dokter, Pasien).
+- Role-based redirect otomatis setelah login menuju dashboard masing-masing.
+- Proteksi route berbasis middleware `auth` dan `role:{role}`.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🔑 Akun Demo (Default Credentials)
 
-## Agentic Development
+Database dilengkapi dengan seeder akun demo bawaan:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Role | Email | Password | Akses Dashboard |
+|---|---|---|---|
+| **Admin** | `admin@gmail.com` | `admin` | `/admin/dashboard` |
+| **Dokter** | `dokter@gmail.com` | `dokter` | `/dokter/dashboard` |
+| **Pasien** | `pasien@gmail.com` | `pasien` | `/pasien/dashboard` |
 
+---
+
+## 📋 Persyaratan Sistem
+
+- **PHP**: >= 8.2 (direkomendasikan PHP 8.3+)
+- **Composer**: >= 2.x
+- **Database**: MySQL / MariaDB (Direkomendasikan menggunakan [Laragon](https://laragon.org/))
+- **Node.js**: >= 18.x & NPM
+
+---
+
+## 🚀 Panduan Instalasi & Menjalankan
+
+### 1. Clone Repository
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/BriyanNicho/poliklinik-app.git
+cd poliklinik-app
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependensi PHP & JavaScript
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 3. Konfigurasi Environment
+Salin file `.env.example` ke `.env`:
+```bash
+cp .env.example .env
+```
+Buka file `.env` dan sesuaikan koneksi database Anda:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=poliklinik_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Generate application key:
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+### 4. Migrasi & Seeder Database
+Pastikan database MySQL sudah dibuat di Laragon/phpMyAdmin (nama default: `poliklinik_db`), lalu jalankan:
+```bash
+php artisan migrate --seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Build Aset Frontend
+```bash
+npm run build
+```
+*(Atau gunakan `npm run dev` untuk pengembangan aktif dengan fitur Hot Module Replacement)*.
 
-## Security Vulnerabilities
+### 6. Menjalankan Server Aplikasi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### **Cara A: Menggunakan Laragon (Direkomendasikan)**
+Jika proyek berada di dalam direktori `C:\laragon\www\poliklinik-app`:
+1. Buka aplikasi Laragon.
+2. Klik tombol **"Start All"**.
+3. Akses aplikasi melalui browser:
+   👉 **`http://poliklinik-app.test`**
 
-## License
+#### **Cara B: Menggunakan Artisan Serve**
+1. Pastikan service MySQL di Laragon sudah aktif.
+2. Jalankan perintah:
+   ```bash
+   php artisan serve
+   ```
+3. Akses aplikasi melalui browser:
+   👉 **`http://127.0.0.1:8000`**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🗺️ Struktur Routing Utama
+
+### **Admin Routes** (`prefix: /admin`, middleware: `auth`, `role:admin`)
+- `GET /admin/dashboard` ➔ `admin.dashboard`
+- `RESOURCE /admin/polis` ➔ `polis.*` (`AdminPoliController`)
+- `RESOURCE /admin/dokter` ➔ `dokter.*` (`DokterController`)
+- `RESOURCE /admin/pasien` ➔ `pasien.*` (`PasienController`)
+- `RESOURCE /admin/obat` ➔ `obat.*` (`ObatController`)
+
+### **Dokter Routes** (`prefix: /dokter`, middleware: `auth`, `role:dokter`)
+- `GET /dokter/dashboard` ➔ `dokter.dashboard`
+- `RESOURCE /dokter/jadwal-periksa` ➔ `jadwal-periksa.*` (`JadwalPeriksaController`)
+- `GET /dokter/periksa-pasien` ➔ `periksa-pasien.index` (`PeriksaPasienController`)
+- `GET /dokter/riwayat-pasien` ➔ `riwayat-pasien.index` (`RiwayatPasienController`)
+- `GET /dokter/riwayat-pasien/{id}` ➔ `riwayat-pasien.show` (`RiwayatPasienController`)
+
+### **Pasien Routes** (`prefix: /pasien`, middleware: `auth`, `role:pasien`)
+- `GET /pasien/dashboard` ➔ `pasien.dashboard`
+- `GET /pasien/daftar-poli` ➔ `pasien.daftar-poli.index` (`PoliController`)
+- `POST /pasien/daftar-poli` ➔ `pasien.daftar-poli.store` (`PoliController`)
+- `DELETE /pasien/daftar-poli/{daftarPoli}` ➔ `pasien.daftar-poli.destroy` (`PoliController`)
+
+---
+
+## 🧪 Pengujian (Testing)
+
+Untuk menjalankan seluruh unit dan feature test:
+```bash
+php artisan test
+```
+
+---
+
+## 📄 Lisensi
+Proyek ini dibuat untuk keperluan akademik dan sistem layanan poliklinik di bawah lisensi [MIT](LICENSE).

@@ -1,0 +1,2 @@
+@include('admin.pasien.edit')
+
